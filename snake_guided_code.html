@@ -32,8 +32,8 @@
         // Create variables for the block Size, Total # of Rows, and Total # of Columns
         
         var blockSize = 25; //size of each square
-        var total_row = 30; //total row number
-        var total_col = 30; //total column number
+        var total_row = 17; //total row number
+        var total_col = 17; //total column number
         
         
         var board;
@@ -57,20 +57,20 @@
         
         window.onload = function () {
             // Set board height and width
-
+            
             
             board = document.getElementById("board");
 
             // These variables should be defined as products of the board size and the size of each block.
-            board.height = ;
-            board.width = ;
+            board.height = total_row * blockSize;
+            board.width = total_col * blockSize;
             context = board.getContext("2d");
         
             // Call a funciton to place the first food item.
             // Add an event listener that listens for the player pressing an arrow key. Then call a function that will change the snake's direction.
            
             placeFood();
-            document.addEventListener( , );  //for movements
+            document.addEventListener("keyup", changeDirection);  //for movements
 
             // Set snake speed
             setInterval(update, 100);
@@ -86,24 +86,25 @@
 
             // Checks for the game to be over, and ends the function
             if (gameOver) {
+                return;
                 // This code should stop the function from continuing
             }
         
             // Background of a Game
-            context.fillStyle = "";
+            context.fillStyle = "green";
 
             // The missing parameters should be the size of the board. 
-            context.fillRect(0, 0, , );
+            context.fillRect(0, 0, board.height, board.width);
         
             // Set food color and position
-            context.fillStyle = "";
+            context.fillStyle = "red";
 
             // The missing parameters should be the size of the food block. 
-            context.fillRect(foodX, foodY, , );
+            context.fillRect(foodX, foodY, blockSize, blockSize);
         
 
             // The missing condition should check if the snake's y position matches the apple's.
-            if (snakeX == foodX &&  == ) {
+            if (snakeX == foodX && snakeY == foodY) {
                 // This code should add a block to the end of the snake's body and create a new food item from our "placeFood" function
             }
         
@@ -121,21 +122,21 @@
             context.fillStyle = "white";
 
             // The missing part of the products below should be the speed of the snake object in the x and y directions.
-            snakeX +=  * blockSize; // updating Snake position in X coordinate.
-            snakeY +=  * blockSize;  // updating Snake position in Y coordinate.
+            snakeX += speedX * blockSize; // updating Snake position in X coordinate.
+            snakeY += speedY * blockSize;  // updating Snake position in Y coordinate.
 
             context.fillRect(snakeX, snakeY, blockSize, blockSize);
 
             // This for loop draws the snake's body at each of its blocks.
             for (let i = 0; i < snakeBody.length; i++) {
-                context.fillRect(/*snake block's x position*/, /*snake block's y position*/, blockSize, blockSize);
+                context.fillRect(snakeX, sn, blockSize, blockSize);
             }
         
             // This code should check if the snake hits any of the board's walls.
-            if (snakeX < // Left wall
-                || snakeX > // Right wall
-                || snakeY < // Top wall
-                || snakeY > // Bottom wall
+            if (snakeX < 0
+                || snakeX > board.width
+                || snakeY < 0
+                || snakeY > board.height
                 ) {
                 
                 // Out of bound condition
@@ -145,10 +146,11 @@
         
             // This code should check if the snake enters its own body
             for (let i = 0; i < snakeBody.length; i++) {
-                if (snakeX == /*The snake's x position at x = i*/ && snakeY == /*The snake's y position at y = i*/) {
+                if (snakeX == snakeBody[i][0] && snakeY == snakeBody[i][1]) {
                     
                     // Snake eats own body
                     //Set the game-over variable to true.
+                    gameOver = true;
                     alert("Game Over");
                 }
             }
@@ -157,21 +159,25 @@
         // Movement of the Snake - We are using addEventListener
         function changeDirection(e) {
 
-            if (e.code == /*Arrow Up Key here*/ && speedY != 1) {
+            if (e.code == "keyup" && speedY != 1) {
                 // The speed of the x should be set to 0 and the speed of the y should be set to -1.
-
+                speedX = 0;
+                speedY = -1;
             }
-            else if (e.code == /*Arrow Down Key here*/ && speedY != -1) {
+            else if (e.code == "keydown" && speedY != -1) {
                 // The speed of the x should be set to 0 and the speed of the y should be set to 1.
-
+                speedX = 0;
+                speedY = 1;
             }
-            else if (e.code == /*Arrow Left Key here*/ && speedX != 1) {
+            else if (e.code == "keyleft" && speedX != 1) {
                 // The speed of the x should be set to -1 and the speed of the y should be set to 0.
-
+                speedX = -1;
+                speedY = 0;
             }
-            else if (e.code == /*Arrow Right Key here*/ && speedX != -1) {
+            else if (e.code == "keyright" && speedX != -1) {
                 // The speed of the x should be set to 1 and the speed of the y should be set to 0.
-
+                speedX = 1;
+                speedY = 0;
             }
         }
         
@@ -180,10 +186,9 @@
         
             // set the foodX postion to a random integer within the board's range.
             // Hint: use Math.random()
-            foodX = ;
-            
+            foodX = Math.floor(Math.random() * total_col) * blockSize;
             // Do the same for the y position
-            foodY = ;
+            foodY = Math.floor(Math.random() * total_row) * blockSize;
         }
     </script>
 </html>
